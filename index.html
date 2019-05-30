@@ -73,14 +73,6 @@
               price: $myDiv
                 .siblings("#priceValue")
                 .find("text")
-                .text(),
-              unique: $myDiv
-                .siblings("#uniqueValue")
-                .find("text")
-                .text(),
-              handlerType: $myDiv
-                .siblings("#uniqueValue")
-                .find("span")
                 .text()
             };
 
@@ -119,7 +111,7 @@
                 });
             });
 
-            // console.log(obj);
+            console.log("data=\n" + obj);
           });
         });
       }
@@ -134,37 +126,16 @@
           "<div><text>" + Object.values(myType)[2] + "</text> $</div>"
         );
 
-        //this is for printing type data succesful, for example KG for weight
-        if (Object.keys(myType)[3] == "weight")
-          var uniqueDiv = $(
-            "<div>Weight: <text>" +
-              Object.values(myType)[3] +
-              "</text> <span>KG<span></div>"
-          );
-        else if (Object.keys(myType)[3] == "size")
-          var uniqueDiv = $(
-            "<div>Size: <text>" +
-              Object.values(myType)[3] +
-              "</text> <span>MB<span></div>"
-          );
-        else
-          var uniqueDiv = $(
-            "<div><span>Dimensions</span>: <text>" +
-              Object.values(myType)[3] +
-              "</text></div>"
-          );
 
         //Add all div's into the p tag
         skuDiv.appendTo(newP);
         nameDiv.appendTo(newP);
         priceDiv.appendTo(newP);
-        uniqueDiv.appendTo(newP);
 
         //Assign id attribute of all type values
         skuDiv.prop("id", "skuValue");
         nameDiv.prop("id", "nameValue");
         priceDiv.prop("id", "priceValue");
-        uniqueDiv.prop("id", "uniqueValue");
 
         //Create checkboxes and insert into the p tag
         $("<input />", {
@@ -177,19 +148,18 @@
         $("#productListDiv").append(newP);
       }
     </script>
-    <title>Product List</title>
+    <title>Veritabanındaki Ürünler Listesi</title>
   </head>
 
   <body>
     <span id="mySpan">
-      <h2>Product List</h2>
+      <h2>Veritabanındaki Ürünler</h2>
       <span>
         <form action="https://urunekle.zgrcnltnk.now.sh">
-          <select>
-            <option value="delete">Mass Delete Action</option>
-          </select>
-          <input type="button" value="Apply" id="sendButton" />
-          <input type="submit" value="Go to New Product Page" />
+          <input type="radio" name="updel" value="guncelle">Güncelle</input>
+		  <input type="radio" name="updel" value="sil">Sil</input>
+          <input type="button" value="Seçimi Uygula" id="sendButton" />
+          <input type="submit" value="Ürün Ekleme Sayfasına Git" />
         </form>
       </span>
     </span>
