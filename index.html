@@ -75,6 +75,12 @@
                 .find("text")
                 .text()
             };
+			
+			<!-- id, sku, name, price -->
+			<!-- console.log(Object.values(value)[0]); -->
+			<!-- console.log(obj.sku.substring(9, obj.sku.length)); -->
+			<!-- console.log(obj.name.substring(10, obj.name.length)); -->
+			<!-- console.log(obj.price.substring(13, obj.price.length)); -->
 
             // Click event for "Apply" Button
             $("#sendButton").click(function() {
@@ -110,8 +116,7 @@
                   console.log(error);
                 });
             });
-
-            console.log("data=\n" + obj);
+			
           });
         });
       }
@@ -120,10 +125,10 @@
       function createBoxTemplates(myType, i) {
         //Use p and div tags for storing elements
         var newP = $("<p></p>");
-        var skuDiv = $("<div>" + Object.values(myType)[0] + "</div>");
-        var nameDiv = $("<div>" + Object.values(myType)[1] + "</div>");
+        var skuDiv = $("<div>Ürün no: " + Object.values(myType)[1] + "</div>");
+        var nameDiv = $("<div>Ürün adı: " + Object.values(myType)[2] + "</div>");
         var priceDiv = $(
-          "<div><text>" + Object.values(myType)[2] + "</text> $</div>"
+          "<div><text>Ürün fiyatı: " + Object.values(myType)[3] + "</text> ₺</div>"
         );
 
 
