@@ -69,7 +69,7 @@
           .get("https://productlistapi.herokuapp.com")
           .then(function(response) {
             // Insert all data to array
-            console.log(response.data);
+            // console.log(response.data);
             arr.push(response.data.reverse());
             receiveDataFromBoxes(arr);
             // console.log(arr[0]);
@@ -95,7 +95,7 @@
                 "https://productlistapi.herokuapp.com/" +
                   Object.values(value)[0]
               )
-              .then(() => console.log("sildim"))
+              .then(() => {})
               .catch(function(error) {
                 console.log(error);
               });
@@ -161,7 +161,7 @@
                   obj
                 )
                 .then(function(response) {
-                  console.log(response);
+                  // console.log(response);
                 })
                 .catch(function(error) {
                   console.log(error);
@@ -219,6 +219,28 @@
         // Add the p tag into the productListDiv created before
         $("#productListDiv").append(newP);
       }
+
+      function VTAra() {
+        $("#productListDiv").empty();
+
+        var arr = [];
+
+        axios
+          .get(
+            "https://productlistapi.herokuapp.com/" +
+              document.getElementById("sorguAd").value
+          )
+          .then(function(response) {
+            // Insert all data to array
+            // console.log(response.data);
+            arr.push(response.data.reverse());
+            receiveDataFromBoxes(arr);
+            // console.log(arr[0]);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     </script>
     <title>Veritabanındaki Ürünler Listesi</title>
   </head>
@@ -228,18 +250,21 @@
       <h2>Veritabanındaki Ürünler</h2>
       <span>
         <form action="https://urunekle.zgrcnltnk.now.sh">
-          <!-- Sorgu yap : <input type="text" name="firstname" value="Mickey"> -->
-          <!-- <button type="button">Ürünlerde ara</button> -->
-          <!-- <br><br> -->
           <input type="submit" value="Ürün Ekleme Sayfasına Git" />
         </form>
       </span>
     </span>
     <hr />
     <span
-      >Ürün silmek "sil" butonuna basın! güncellemek için "güncelle" butonuna
-      basın!</span
-    >
+      >Veritabanında Sorgu yap:<br />
+      <input
+        type="text"
+        name="sorguUrunAdi"
+        id="sorguAd"
+        placeholder=">ürün adı.."/>
+      <button type="button" onclick="VTAra()">VT'da Ara</button><br
+    /></span>
+
     <div id="productListDiv"></div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
