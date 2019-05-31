@@ -7,6 +7,11 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
     <style type="text/css">
+      input[type="checkbox"] {
+        display: flex;
+        transform: scale(2);
+      }
+
       #productListDiv {
         display: flex;
         flex-wrap: wrap;
@@ -27,15 +32,18 @@
         line-height: 100px;
         font-size: 20px;
       }
+
       #checkBoxId {
         display: flex;
       }
+
       #mySpan {
         justify-content: space-between;
         display: flex;
       }
     </style>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script>
       // Create an array to store objects
       var arr = [];
@@ -44,8 +52,8 @@
       axios
         .get("https://productlistapi.herokuapp.com")
         .then(function(response) {
-          // Insert all data to array
-          arr.push(response.data);
+          // Insert all data to(reversed)
+          arr.push(response.data.reverse());
           receiveDataFromBoxes(arr);
 
           // All Data is here at arr[0]
@@ -55,6 +63,22 @@
           console.log(error);
         });
 
+      function getRequest(arr) {
+        // Sending get request after delete
+        axios
+          .get("https://productlistapi.herokuapp.com")
+          .then(function(response) {
+            // Insert all data to array
+            console.log(response.data);
+            arr.push(response.data.reverse());
+            receiveDataFromBoxes(arr);
+            // console.log(arr[0]);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+
       // Take data for processing
       function receiveDataFromBoxes(arr) {
         // Iterating over entries in data
@@ -63,7 +87,34 @@
           createBoxTemplates(value, i);
 
           //Execute when the specific checkbox selected
-          $("#isSelected" + i).click(function() {
+          $("#del" + i).click(function() {
+            var updatedArr = [];
+
+            axios
+              .delete(
+                "https://productlistapi.herokuapp.com/" +
+                  Object.values(value)[0]
+              )
+              .then(() => console.log("sildim"))
+              .catch(function(error) {
+                console.log(error);
+              });
+
+            $("#productListDiv").empty();
+
+            setTimeout(function() {
+              getRequest(updatedArr);
+            }, 500);
+
+            //  console.log(Object.values(value)[0]);
+            //  id, sku, name, price
+            //  console.log(obj.sku.substring(9, obj.sku.length));
+            //  console.log(obj.name.substring(10, obj.name.length));
+            //  console.log(obj.price.substring(13, obj.price.length));
+          });
+
+          $("#upd" + i).click(function() {
+            var updatedArr = [];
             var $myDiv = $(this);
 
             //To access the location of both checkbox and texts
@@ -75,24 +126,40 @@
                 .find("text")
                 .text()
             };
-			
-			<!-- id, sku, name, price -->
-			<!-- console.log(Object.values(value)[0]); -->
-			<!-- console.log(obj.sku.substring(9, obj.sku.length)); -->
-			<!-- console.log(obj.name.substring(10, obj.name.length)); -->
-			<!-- console.log(obj.price.substring(13, obj.price.length)); -->
 
-            // Click event for "Apply" Button
-            $("#sendButton").click(function() {
-              // Create new array to hold objects
-              var updatedArr = [];
+            var productNo = prompt(
+              "Ürün no'usunu girin:",
+              obj.sku.substring(9, obj.sku.length)
+            );
+            var productName = prompt(
+              "Ürün adını girin:",
+              obj.name.substring(10, obj.name.length)
+            );
+            var productPrice = prompt(
+              "Ürün fiyatını girin (₺) :",
+              obj.price.substring(13, obj.price.length)
+            );
+            if (
+              productNo != "" &&
+              productName != "" &&
+              productPrice != "" &&
+              productNo != null &&
+              productName != null &&
+              productPrice != null
+            ) {
+              var obj = {
+                _id: Object.values(value)[0],
+                sku: productNo,
+                name: productName,
+                price: productPrice
+              };
 
-              // Make put request implement deleting product
-
-              // Explanation: I've used "Put" method because I need to send
-              // objects of product, "Delete" method doesn't send request body
               axios
-                .put("https://productlistapi.herokuapp.com", obj)
+                .put(
+                  "https://productlistapi.herokuapp.com/" +
+                    Object.values(value)[0],
+                  obj
+                )
                 .then(function(response) {
                   console.log(response);
                 })
@@ -100,23 +167,12 @@
                   console.log(error);
                 });
 
-              // To see new product list after deleting one or more products
               $("#productListDiv").empty();
 
-              //Sending get request after delete
-              axios
-                .get("https://productlistapi.herokuapp.com")
-                .then(function(response) {
-                  // Insert all data to array
-                  updatedArr.push(response.data);
-                  receiveDataFromBoxes(updatedArr);
-                  // console.log(arr[0]);
-                })
-                .catch(function(error) {
-                  console.log(error);
-                });
-            });
-			
+              setTimeout(function() {
+                getRequest(updatedArr);
+              }, 250);
+            }
           });
         });
       }
@@ -126,11 +182,14 @@
         //Use p and div tags for storing elements
         var newP = $("<p></p>");
         var skuDiv = $("<div>Ürün no: " + Object.values(myType)[1] + "</div>");
-        var nameDiv = $("<div>Ürün adı: " + Object.values(myType)[2] + "</div>");
-        var priceDiv = $(
-          "<div><text>Ürün fiyatı: " + Object.values(myType)[3] + "</text> ₺</div>"
+        var nameDiv = $(
+          "<div>Ürün adı: " + Object.values(myType)[2] + "</div>"
         );
-
+        var priceDiv = $(
+          "<div><text>Ürün fiyatı: " +
+            Object.values(myType)[3] +
+            "</text> ₺</div>"
+        );
 
         //Add all div's into the p tag
         skuDiv.appendTo(newP);
@@ -144,9 +203,17 @@
 
         //Create checkboxes and insert into the p tag
         $("<input />", {
-          type: "checkbox",
-          id: "isSelected" + i,
-          name: "productCheck"
+          type: "button",
+          id: "del" + i,
+          name: "silCheck",
+          value: "sil"
+        }).appendTo(newP);
+
+        $("<input />", {
+          type: "button",
+          id: "upd" + i,
+          name: "guncelleCheck",
+          value: "güncelle"
         }).appendTo(newP);
 
         // Add the p tag into the productListDiv created before
@@ -161,17 +228,19 @@
       <h2>Veritabanındaki Ürünler</h2>
       <span>
         <form action="https://urunekle.zgrcnltnk.now.sh">
-          <input type="radio" name="updel" value="guncelle">Güncelle</input>
-		  <input type="radio" name="updel" value="sil">Sil</input>
-          <input type="button" value="Seçimi Uygula" id="sendButton" />
+          <!-- Sorgu yap : <input type="text" name="firstname" value="Mickey"> -->
+          <!-- <button type="button">Ürünlerde ara</button> -->
+          <!-- <br><br> -->
           <input type="submit" value="Ürün Ekleme Sayfasına Git" />
         </form>
       </span>
     </span>
-
     <hr />
+    <span
+      >Ürün silmek "sil" butonuna basın! güncellemek için "güncelle" butonuna
+      basın!</span
+    >
     <div id="productListDiv"></div>
-    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
 </html>

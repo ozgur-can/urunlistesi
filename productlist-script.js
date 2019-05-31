@@ -34,16 +34,10 @@ function receiveDataFromBoxes(arr) {
         price: $myDiv
           .siblings("#priceValue")
           .find("text")
-          .text(),
-        unique: $myDiv
-          .siblings("#uniqueValue")
-          .find("text")
-          .text(),
-        handlerType: $myDiv
-          .siblings("#uniqueValue")
-          .find("span")
           .text()
       };
+
+	console.log(obj);
 
       // Click event for "Apply" Button
       $("#sendButton").click(function() {
@@ -54,30 +48,30 @@ function receiveDataFromBoxes(arr) {
 
         // Explanation: I've used "Put" method because I need to send
         // objects of product, "Delete" method doesn't send request body
-        axios
-          .put("https://productlistapi.herokuapp.com", obj)
-          .then(function(response) {
-            console.log(response);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        // axios
+          // .put("https://productlistapi.herokuapp.com", obj)
+          // .then(function(response) {
+            // console.log(response);
+          // })
+          // .catch(function(error) {
+            // console.log(error);
+          // });
 
         // To see new product list after deleting one or more products
         $("#productListDiv").empty();
 
         //Sending get request after delete
-        axios
-          .get("https://productlistapi.herokuapp.com")
-          .then(function(response) {
-            // Insert all data to array
-            updatedArr.push(response.data);
-            receiveDataFromBoxes(updatedArr);
-            // console.log(arr[0]);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        // axios
+          // .get("https://productlistapi.herokuapp.com")
+          // .then(function(response) {
+            // // Insert all data to array
+            // updatedArr.push(response.data);
+            // receiveDataFromBoxes(updatedArr);
+            // // console.log(arr[0]);
+          // })
+          // .catch(function(error) {
+            // console.log(error);
+          // });
       });
 
       // console.log(obj);
@@ -85,29 +79,6 @@ function receiveDataFromBoxes(arr) {
   });
 }
 
-// Understanding which kind of product to delete
-function getTypeByProductBox($myDiv) {
-  var myType;
-
-  // Get the type, If not the table you want to delete will be missing
-  if (
-    $myDiv
-      .siblings("#uniqueValue")
-      .find("span")
-      .text() == "MB"
-  )
-    myType = "BOOK";
-  else if (
-    $myDiv
-      .siblings("#uniqueValue")
-      .find("span")
-      .text() == "KG"
-  )
-    myType = "DVDDISC";
-  else myType = "FURNITURE";
-
-  return myType;
-}
 
 // Box creator for seperate type of products
 function createBoxTemplates(myType, i) {
@@ -118,38 +89,19 @@ function createBoxTemplates(myType, i) {
   var priceDiv = $(
     "<div><text>" + Object.values(myType)[2] + "</text> $</div>"
   );
-
-  //this is for printing type data succesful, for example KG for weight
-  if (Object.keys(myType)[3] == "weight")
-    var uniqueDiv = $(
-      "<div>Weight: <text>" +
-        Object.values(myType)[3] +
-        "</text> <span>KG<span></div>"
-    );
-  else if (Object.keys(myType)[3] == "size")
-    var uniqueDiv = $(
-      "<div>Size: <text>" +
-        Object.values(myType)[3] +
-        "</text> <span>MB<span></div>"
-    );
-  else
-    var uniqueDiv = $(
-      "<div><span>Dimensions</span>: <text>" +
-        Object.values(myType)[3] +
-        "</text></div>"
-    );
+  var guncelleButonu = $("<button type="button">" + merhaba + "</button>");
 
   //Add all div's into the p tag
   skuDiv.appendTo(newP);
   nameDiv.appendTo(newP);
-  priceDiv.appendTo(newP);
-  uniqueDiv.appendTo(newP);
+  priceDiv.appendTo(newP));
+  guncelleButonu.appendTo(newP);
 
   //Assign id attribute of all type values
   skuDiv.prop("id", "skuValue");
   nameDiv.prop("id", "nameValue");
   priceDiv.prop("id", "priceValue");
-  uniqueDiv.prop("id", "uniqueValue");
+  guncelleButonu.prop("id", "guncValue");
 
   //Create checkboxes and insert into the p tag
   $("<input />", {
