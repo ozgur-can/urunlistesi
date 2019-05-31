@@ -220,15 +220,18 @@
         $("#productListDiv").append(newP);
       }
 
+        
       function VTAra() {
         $("#productListDiv").empty();
 
         var arr = [];
 
+
+        if($('#myLast [name=choice]:checked').val() == "ad"){
         axios
           .get(
             "https://productlistapi.herokuapp.com/" +
-              document.getElementById("sorguAd").value
+              document.getElementById("sorgu").value
           )
           .then(function(response) {
             // Insert all data to array
@@ -240,6 +243,27 @@
           .catch(function(error) {
             console.log(error);
           });
+
+        }
+        else if($('#myLast [name=choice]:checked').val() == "numara")
+        {
+          axios
+          .patch(
+            "https://productlistapi.herokuapp.com/" +
+              document.getElementById("sorgu").value
+          )
+          .then(function(response) {
+            // Insert all data to array
+            // console.log(response.data);
+            arr.push(response.data.reverse());
+            receiveDataFromBoxes(arr);
+            // console.log(arr[0]);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+          
+        }
       }
     </script>
     <title>Veritabanındaki Ürünler Listesi</title>
@@ -255,15 +279,19 @@
       </span>
     </span>
     <hr />
-    <span
-      >Veritabanında Sorgu yap:<br />
-      <input
-        type="text"
-        name="sorguUrunAdi"
-        id="sorguAd"
-        placeholder=">ürün adı.."/>
-      <button type="button" onclick="VTAra()">VT'da Ara</button><br
-    /></span>
+    <span>
+      <form id="myLast">
+        Arama tipi:
+        <input type="radio" name="choice" value="numara" checked/>Numara</input>
+        <input type="radio" name="choice" value="ad" />Ad</input><br />Veritabanında Sorgu yap:<br />
+        <input
+          type="text"
+          name="sorguUrunAdi"
+          id="sorgu"
+          placeholder=">ürün no'su/adı.."
+        />
+        <button type="button" onclick="VTAra()">VT'da Ara</button><br /></form
+    ></span>
 
     <div id="productListDiv"></div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
