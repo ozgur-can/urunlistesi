@@ -54,6 +54,8 @@
         .get("https://productlistapi.herokuapp.com")
         .then(function(response) {
 
+          $("#yukleniyorDiv").empty();
+
           // Insert all data to(reversed)
           arr.push(response.data.reverse());
           receiveDataFromBoxes(arr);
@@ -70,6 +72,9 @@
         axios
           .get("https://productlistapi.herokuapp.com")
           .then(function(response) {
+
+            $("#yukleniyorDiv").empty();
+
             // Insert all data to array
             // console.log(response.data);
             arr.push(response.data.reverse());
@@ -296,6 +301,7 @@
         <button type="button" onclick="VTAra()">VT'da Ara</button><br /></form
     ></span>
 
+    <div id="yukleniyorDiv"><h2>Yükleniyor...</h2></div>
     <div id="productListDiv"></div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
