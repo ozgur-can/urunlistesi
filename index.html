@@ -182,8 +182,6 @@
       // Box creator for seperate type of products
       function createBoxTemplates(myType, i) {
 
-        $("#productListDiv").empty();
-
         //Use p and div tags for storing elements
         var newP = $("<p></p>");
         var skuDiv = $("<div>Ürün no: " + Object.values(myType)[1] + "</div>");
@@ -298,7 +296,7 @@
         <button type="button" onclick="VTAra()">VT'da Ara</button><br /></form
     ></span>
 
-    <div id="productListDiv">Yükleniyor...</div>
+    <div id="productListDiv"></div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
 </html>
