@@ -275,28 +275,8 @@
           });
           
         }
-      }
 
-      function VTAra2() {
-        $("#productListDiv").empty();
-
-        var arr = [];
-
-        axios
-          .get(
-            "https://productlistapi.herokuapp.com/" +
-              document.getElementById("bos").value
-          )
-          .then(function(response) {
-            // Insert all data to array
-            // console.log(response.data);
-            arr.push(response.data.reverse());
-            receiveDataFromBoxes(arr);
-            // console.log(arr[0]);
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        $("#sorgu").val("");
       }
     </script>
     <title>Veritabanındaki Ürünler Listesi</title>
@@ -323,13 +303,11 @@
           id="sorgu"
           placeholder=">ürün no'su/adı.."
         />
-        <button type="button" onclick="VTAra()">VT'da Ara</button>
-        <button type="button" onclick="VTAra2()">Aramayı Geri Al</button><br /></form
+        <button type="button" onclick="VTAra()">VT'da Ara</button><br /></form
     ></span>
 
     <div id="yukleniyorDiv"><h2 style="text-align: center">Yükleniyor...</h2></div>
     <div id="productListDiv"></div>
-    <div id="bos"></div>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
 </html>
