@@ -68,6 +68,9 @@
         });
 
       function getRequest(arr) {
+
+        $("#productListDiv").empty();
+
         // Sending get request after delete
         axios
           .get("https://productlistapi.herokuapp.com")
