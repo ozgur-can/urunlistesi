@@ -46,10 +46,6 @@
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script>
 
-    var newH2 = $("<h2>"+ Yükleniyor... +"</h2>");
-
-    $("#productListDiv").append(newH2);
-
       // Create an array to store objects
       var arr = [];
 
@@ -57,8 +53,6 @@
       axios
         .get("https://productlistapi.herokuapp.com")
         .then(function(response) {
-
-          $("#productListDiv").empty();
 
           // Insert all data to(reversed)
           arr.push(response.data.reverse());
